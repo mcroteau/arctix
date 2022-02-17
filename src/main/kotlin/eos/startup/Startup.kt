@@ -78,7 +78,7 @@ class Startup {
                     cache?.events!!.javaClass.getDeclaredMethod("setupComplete", Eos.Cache::class.java)
                 if (setupComplete != null) {
                     setupComplete.isAccessible = true
-                    setupComplete.invoke(cache?.events, cache)
+                    setupComplete.invoke(cache?.events, *arrayOf(cache))
                 }
             }
         }
@@ -91,8 +91,8 @@ class Startup {
 
         @Throws(Exception::class)
         private fun runConfigProcessor() {
-            if (cache?.elementProcessor?.configs != null &&
-                cache?.elementProcessor?.configs?.size!! > 0
+            if (cache?.elementProcessor?.configurations != null &&
+                cache?.elementProcessor?.configurations?.size!! > 0
             ) {
                 ConfigurationProcessor(cache).run()
             }

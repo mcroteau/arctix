@@ -104,7 +104,7 @@ class Support {
     @get:Throws(Exception::class)
     val classesUri: String?
         get() {
-            var classesUri = Paths.get("src", "main", "java")
+            var classesUri = Paths.get("src", "main", "kotlin")
                 .toAbsolutePath()
                 .toString()
             val classesDir = File(classesUri)

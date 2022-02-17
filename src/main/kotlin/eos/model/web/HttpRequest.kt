@@ -7,11 +7,13 @@ import eos.util.Support
 import java.util.*
 
 class HttpRequest(var sessions: MutableMap<String?, HttpSession?>, httpExchange: HttpExchange) {
+
     var session: HttpSession? = null
     var httpExchange: HttpExchange
     var elements: MutableMap<String?, FormElement?>
     var requestBody: String? = null
     var support: Support
+
     fun data(): MutableMap<String?, FormElement?> {
         return elements
     }
@@ -20,14 +22,14 @@ class HttpRequest(var sessions: MutableMap<String?, HttpSession?>, httpExchange:
         get() = httpExchange.requestHeaders
 
     fun setSession() {
-        val id = support.getCookie(Eos.Companion.SECURITYTAG, httpExchange.requestHeaders)
+        val id = support.getCookie(Eos.SECURITYTAG, httpExchange.requestHeaders)
         if (sessions.containsKey(id)) {
             session = sessions[id]
         }
     }
 
     fun getSession(newitup: Boolean): HttpSession? {
-        val id = support.getCookie(Eos.Companion.SECURITYTAG, httpExchange.requestHeaders)
+        val id = support.getCookie(Eos.SECURITYTAG, httpExchange.requestHeaders)
         if (!newitup) {
             if (sessions.containsKey(id)) {
                 session = sessions[id]
@@ -41,8 +43,8 @@ class HttpRequest(var sessions: MutableMap<String?, HttpSession?>, httpExchange:
 
     private fun getHttpSession(): HttpSession {
         var httpSession = HttpSession(sessions, httpExchange)
-        sessions[httpSession.getId()] = httpSession
-        val compound: String = Eos.Companion.SECURITYTAG + "=" + httpSession.getId()
+        sessions[httpSession.id] = httpSession
+        val compound: String = Eos.Companion.SECURITYTAG + "=" + httpSession.id
         httpExchange.responseHeaders["Set-Cookie"] = compound
         httpSession = httpSession
         return httpSession
@@ -65,7 +67,7 @@ class HttpRequest(var sessions: MutableMap<String?, HttpSession?>, httpExchange:
      */
     fun value(key: String?): String? {
         return if (elements.containsKey(key)) {
-            elements[key]!!.value()
+            elements[key]!!.value
         } else null
     }
 
@@ -75,22 +77,22 @@ class HttpRequest(var sessions: MutableMap<String?, HttpSession?>, httpExchange:
         } else null
     }
 
-    fun getMultiple(key: String): Array<Any> {
-        val values: MutableList<String?> = ArrayList()
+    fun getMultiple(key: String): Any? {
+        val values: ArrayList<Any?> = ArrayList()
         for ((key1, value) in elements) {
             if (key == key1 &&
-                value!!.value() != null
+                value!!.value != null
             ) {
-                values.add(value.value())
+                values.add(value.value)
             }
         }
-        return values.toTypedArray()!!
+        return values.toTypedArray()
     }
 
     fun getPayload(key: String?): ByteArray? {
         if (elements.containsKey(key)) {
-            if (elements[key]!!.getFileBytes() != null) {
-                return elements[key]!!.getFileBytes()
+            if (elements[key]!!.fileBytes != null) {
+                return elements[key]!!.fileBytes
             }
         }
         return null
@@ -104,8 +106,8 @@ class HttpRequest(var sessions: MutableMap<String?, HttpSession?>, httpExchange:
                 val key = parts[0]
                 val value = parts[1]
                 val formElement = FormElement()
-                formElement.setName(key)
-                formElement.setValue(value)
+                formElement.name = key
+                formElement.value = value
                 elements[key] = formElement
             }
         }

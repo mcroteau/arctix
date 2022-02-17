@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
 class EndpointMappings {
-    var mappings: ConcurrentMap<String?, EndpointMapping>
+    var mappings: MutableMap<String?, EndpointMapping>
     fun add(key: String?, endpointMapping: EndpointMapping) {
         mappings[key] = endpointMapping
     }

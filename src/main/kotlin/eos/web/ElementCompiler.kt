@@ -55,10 +55,10 @@ class ElementCompiler(
                     if (keyValue.size > 1) {
                         val value = keyValue[1]
                         element.name = key
-                        element.setValue(value)
+                        element.value = value
                     } else {
                         element.name = key
-                        element.setValue("")
+                        element.value = ""
                     }
                     httpRequest.data()[key] = element
                 }
@@ -126,7 +126,7 @@ class ElementCompiler(
                 val lastbit = value.indexOf("\r\n--")
                 value = value.substring(0, lastbit).trim { it <= ' ' }
             }
-            formElement.setValue(value)
+            formElement.value = value
         }
         return formElement
     }

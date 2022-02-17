@@ -6,6 +6,7 @@ import eos.model.InstanceDetails
 import eos.util.Support
 import java.io.File
 import java.lang.reflect.InvocationTargetException
+import java.nio.file.Path
 import java.util.*
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
@@ -126,7 +127,8 @@ class InstanceProcessor(var cache: Eos.Cache?) {
                         cache?.events = getObject(cls)
                     }
                     val instanceDetails = getObjectDetails(cls)
-                    cache?.objects?.put(instanceDetails?.name!!, instanceDetails)
+                    cache?.objects?.set(instanceDetails?.name!!, instanceDetails)
+                    println("instintante" + cache?.objects?.get(instanceDetails?.name!!))
                 }
             } catch (ex: Exception) {
                 ex.printStackTrace()
@@ -144,24 +146,31 @@ class InstanceProcessor(var cache: Eos.Cache?) {
             try {
                 if (isDirt(file.path)) continue
                 if (!file.path.endsWith(".class") &&
-                    !file.path.endsWith(".java")
+                    !file.path.endsWith(".kt")
                 ) continue
-                var path = getPath("java", "java", file.path)
+                var path = getPath("kotlin", "kotlin", file.path)
                 if (file.toString().endsWith(".class")) {
                     path = getPath("class", "classes", file.path)
                 }
-                val cls = cl.loadClass(path)
-                if (cls.isAnnotation ||
-                    cls.isInterface ||
-                    cls.name === this.javaClass.name
+
+                var cls : Class<*>? = null
+                try {
+                    cls = cl.loadClass(path)
+                }catch(ex: Exception){
+                    cls = cl.loadClass(path + "Kt")
+                }
+
+                if (cls?.isAnnotation == true ||
+                    cls?.isInterface == true ||
+                    cls?.name === this.javaClass.name
                 ) {
                     continue
                 }
-                if (cls.isAnnotationPresent(Events::class.java)) {
+                if (cls?.isAnnotationPresent(Events::class.java) == true) {
                     cache?.events = getObject(cls)
                 }
                 val instanceDetails = getObjectDetails(cls)
-                cache?.objects?.put(instanceDetails?.name!!, instanceDetails)
+                cache?.objects?.set(instanceDetails?.name!!, instanceDetails)
             } catch (ex: Exception) {
                 ex.printStackTrace()
             }
@@ -184,23 +193,23 @@ class InstanceProcessor(var cache: Eos.Cache?) {
         return pathParts[1]
             .replace("\\", ".")
             .replace("/", ".")
-            .replace(".$name", "")
+            .replace(".kt", "")
     }
 
     @Throws(IllegalAccessException::class, InvocationTargetException::class, InstantiationException::class)
-    protected fun getObjectDetails(cls: Class<*>): InstanceDetails {
+    protected fun getObjectDetails(cls: Class<*>?): InstanceDetails {
         val instanceDetails = InstanceDetails()
         instanceDetails.instanceClass = cls
-        instanceDetails.name = support.getName(cls.name)
+        instanceDetails.name = support.getName(cls?.name)
         val instance = getObject(cls)
         instanceDetails.instance = instance
         return instanceDetails
     }
 
-    protected fun getObject(cls: Class<*>): Any? {
+    protected fun getObject(cls: Class<*>?): Any? {
         var instance: Any? = null
         try {
-            instance = cls.getConstructor().newInstance()
+            instance = cls?.getConstructor()?.newInstance()
         } catch (e: InstantiationException) {
         } catch (e: IllegalAccessException) {
         } catch (e: InvocationTargetException) {

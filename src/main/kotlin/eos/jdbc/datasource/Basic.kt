@@ -16,7 +16,7 @@ class Basic(builder: Builder) : DataSource {
     var dbUsername: String?
     var dbPassword: String?
     var loginTimeout: Int? = null
-    var connection: Connection? = null
+    var conn: Connection? = null
 
     class Builder {
         var dbUrl: String? = null
@@ -60,7 +60,7 @@ class Basic(builder: Builder) : DataSource {
             Class.forName(dbDriver)
             val connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword)
             connection.autoCommit = false
-            this.connection = connection
+            this.conn = connection
             connection
         } catch (ex: SQLException) {
             throw RuntimeException("Problem connecting to the database", ex)
@@ -82,7 +82,7 @@ class Basic(builder: Builder) : DataSource {
     }
 
     @Throws(SQLException::class)
-    override fun getLogWriter(): PrintWriter {
+    override fun getLogWriter(): PrintWriter? {
         return null
     }
 
@@ -101,12 +101,12 @@ class Basic(builder: Builder) : DataSource {
     }
 
     @Throws(SQLFeatureNotSupportedException::class)
-    override fun getParentLogger(): Logger {
+    override fun getParentLogger(): Logger? {
         return null
     }
 
     @Throws(SQLException::class)
-    override fun <T> unwrap(iface: Class<T>): T {
+    override fun <T> unwrap(iface: Class<T>): T? {
         return null
     }
 

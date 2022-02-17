@@ -17,36 +17,6 @@ class HttpResponse {
         } else null
     }
 
-    fun setTitle(title: String?) {
-        this.title = title
-    }
-
-    fun getTitle(): String? {
-        return if (title != null) {
-            title
-        } else ""
-    }
-
-    fun getKeywords(): String? {
-        return if (keywords != null) {
-            keywords
-        } else ""
-    }
-
-    fun setKeywords(keywords: String?) {
-        this.keywords = keywords
-    }
-
-    fun getDescription(): String? {
-        return if (description != null) {
-            description
-        } else ""
-    }
-
-    fun setDescription(description: String?) {
-        this.description = description
-    }
-
     fun data(): Map<String?, Any?> {
         return data
     }

@@ -11,6 +11,7 @@ class HttpSession(sessions: MutableMap<String?, HttpSession?>, httpExchange: Htt
     var sessions: MutableMap<String?, HttpSession?>
     var attributes: MutableMap<String, Any>
     var support: Support
+
     operator fun set(key: String, value: Any): Boolean {
         attributes[key] = value
         return true

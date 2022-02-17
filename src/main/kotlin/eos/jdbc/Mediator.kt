@@ -9,11 +9,15 @@ import java.io.InputStream
 import java.io.StringReader
 import javax.sql.DataSource
 
-class Mediator(var settings: Settings?, var support: Support, var cache: Eos.Cache?) {
+class Mediator(var settings: Settings?,
+               var support: Support,
+               var cache: Eos.Cache?) {
+
     val CREATEDB_URI = "src/main/resources/create-db.sql"
+
     @Throws(Exception::class)
     fun createDb() {
-        val artifactPath: String = Support.Companion.getResourceUri()
+        val artifactPath: String = Support.Companion.resourceUri
         if (!settings!!.isNoAction &&
             settings!!.isCreateDb
         ) {

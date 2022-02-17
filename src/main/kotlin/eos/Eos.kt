@@ -22,6 +22,7 @@ import java.net.InetSocketAddress
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.collections.ArrayList
 
 class Eos(builder: Builder) {
 
@@ -92,7 +93,7 @@ class Eos(builder: Builder) {
         var elementProcessor: ElementProcessor? = null
         var endpointMappings: EndpointMappings? = null
         fun getElement(name: String): Any? {
-            val key = name.toLowerCase()
+            val key = name.lowercase()
             return if (elementStorage.elements.containsKey(key)) {
                 elementStorage.elements[key]?.element
             } else null
@@ -100,18 +101,10 @@ class Eos(builder: Builder) {
 
         val elements: Map<String?, Element?>?
             get() = elementStorage.elements
-        var resources: List<String?>?
+        var resources: List<String?>? = null
             get() = settings?.resources
-        var propertiesFiles: List<String?>?
+        var propertiesFiles: List<String?>? = null
             get() = settings?.propertiesFiles
-
-        fun setResources(resources: List<String>?) {
-            settings?.resources = resources
-        }
-
-        fun setPropertiesFiles(propertiesFiles: List<String>?) {
-            settings?.propertiesFiles = propertiesFiles
-        }
 
         val objects: MutableMap<String, InstanceDetails>
             get() = objectStorage.objects

@@ -97,7 +97,7 @@ class ConfigurationProcessor(var cache: Eos.Cache?) {
 
     @Throws(Exception::class)
     protected fun setMapDependencyMethods() {
-        for (config in cache?.elementProcessor!!.configs) {
+        for (config in cache?.elementProcessor!!.configurations) {
             var instance : Any? = null
             val constructors = config!!.constructors
             for (constructor in constructors) {

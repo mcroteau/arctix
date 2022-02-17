@@ -113,13 +113,13 @@ class AnnotationProcessor(var cache: Eos.Cache?) {
     }
 
     private fun map() {
-        cache?.elementProcessor?.annotatedClasses?.forEach { (_, instanceDetails) ->
+        cache?.elementProcessor?.annotatedInstances?.forEach { (_, instanceDetails) ->
             if (!annotations.contains(instanceDetails)) annotations?.add(instanceDetails)
         }
     }
 
     protected fun allAnnotationsProcessed(): Boolean {
-        return processed.size == cache?.elementProcessor?.annotatedClasses?.size
+        return processed.size == cache?.elementProcessor?.annotatedInstances?.size
     }
 
     init {

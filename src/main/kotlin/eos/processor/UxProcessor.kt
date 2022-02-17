@@ -41,8 +41,8 @@ class UxProcessor {
                 val iterable = getIterable(a6, entryBase, httpResponse, entries)
                 val eachOut = StringBuilder()
                 //                System.out.println("z" + iterable.getStop() + ":" +  entries.get(iterable.getStop()));
-                for (a7 in iterable.pojos.indices) {
-                    val obj = iterable.pojos[a7]
+                for (a7 in iterable.pojos!!.indices) {
+                    val obj = iterable.pojos!![a7]
                     var ignore: List<Int?> = ArrayList()
                     for (a8 in iterable.start until iterable.stop) {
                         var entry = entries[a8]
@@ -117,8 +117,8 @@ class UxProcessor {
         httpResponse: HttpResponse,
         entries: List<String>
     ) {
-        for (a7 in iterable.pojos.indices) {
-            val obj = iterable.pojos[a7]
+        for (a7 in iterable.pojos!!.indices) {
+            val obj = iterable.pojos!![a7]
             var ignore: List<Int?> = ArrayList()
             for (a6 in iterable.start until iterable.stop) {
                 var entry = entries[a6]
@@ -256,7 +256,7 @@ class UxProcessor {
         pointcuts: Map<String?, Pointcut?>?
     ) {
         for ((_, pointcut) in pointcuts!!) {
-            val key = pointcut.getKey() //dice:rollem in <dice:rollem> is key
+            val key = pointcut?.key //dice:rollem in <dice:rollem> is key
             val open = "<$key>"
             val rabbleDos = "<$key/>"
             val close = "</$key>"
@@ -284,7 +284,7 @@ class UxProcessor {
                         }
                     }
                     if (!pointcut.isEvaluation) {
-                        val output = pointcut.halloween(request, exchange)
+                        val output = pointcut.process(request, exchange)
                         if (output != null) {
                             entryBase = entryBase.replace(open, output)
                             entryBase = entryBase.replace(open + close, output)

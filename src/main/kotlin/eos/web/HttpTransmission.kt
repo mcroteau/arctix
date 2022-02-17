@@ -23,8 +23,8 @@ class HttpTransmission(var cache: Eos.Cache?) : HttpHandler {
     override fun handle(httpExchange: HttpExchange) {
         val outputStream = httpExchange.responseBody
         try {
-            val `is` = httpExchange.requestBody
-            val payloadBytes = support.getPayloadBytes(`is`)
+            val inputStream = httpExchange.requestBody
+            val payloadBytes = support.getPayloadBytes(inputStream)
             val requestCompiler = ElementCompiler(cache, payloadBytes, sessions, httpExchange)
             val httpRequest = requestCompiler.compile()
             val payload = support.getPayload(payloadBytes)
@@ -35,9 +35,9 @@ class HttpTransmission(var cache: Eos.Cache?) : HttpHandler {
             }
             val transformer = UriTranslator(support, httpExchange)
             val requestUri = transformer.translate()
-            httpRequest!!.setValues(transformer.parameters)
-            val httpVerb = httpExchange.requestMethod.toLowerCase()
-            if (ResourceResponse.Companion.isResource(requestUri, cache)) {
+            httpRequest.setValues(transformer.parameters)
+            val httpVerb = httpExchange.requestMethod.lowercase()
+            if (ResourceResponse.isResource(requestUri, cache)) {
                 ResourceResponse.Builder()
                     .withCache(cache)
                     .withRequestUri(requestUri)
@@ -50,7 +50,6 @@ class HttpTransmission(var cache: Eos.Cache?) : HttpHandler {
             val httpResponse = getHttpResponse(httpExchange)
             if (httpRequest.session != null) {
                 val httpSession = httpRequest.session
-                val session: Map<String, String> = HashMap()
                 for ((key, value1) in httpSession!!.data()) {
                     val value = value1.toString()
                     httpResponse[key] = value
@@ -79,10 +78,16 @@ class HttpTransmission(var cache: Eos.Cache?) : HttpHandler {
             }
 
             //todo:spread operator
-            val `object`: Any? = endpointMapping?.classDetails?.instance
-            var methodResponse = method.invoke(`object`, signature) as String
+            val instance: Any? = endpointMapping.classDetails?.instance
+            val numberOfParameters = method.parameters
 
-            if (methodResponse == null) throw Exception("something went wrong when calling $method")
+            var methodResponse : String ?
+            if(numberOfParameters.size == 0) {
+                methodResponse = method.invoke(instance) as String
+            }else{
+                methodResponse = method.invoke(instance, *signature) as String
+            }
+
             if (method.isAnnotationPresent(Text::class.java) ||
                 method.isAnnotationPresent(Plain::class.java)
             ) {
@@ -206,7 +211,7 @@ class HttpTransmission(var cache: Eos.Cache?) : HttpHandler {
                         httpExchange.sendResponseHeaders(200, bs.size.toLong())
                         outputStream.write(bs)
                     } else {
-                        var pageOutput = ""
+                        var pageOutput : String ?
                         try {
                             val uxProcessor = cache?.uxProcessor
                             val pointcuts = cache?.pointCuts
@@ -302,7 +307,7 @@ class HttpTransmission(var cache: Eos.Cache?) : HttpHandler {
                         httpExchange.sendResponseHeaders(200, bs.size.toLong())
                         outputStream.write(bs)
                     } else {
-                        var pageOutput = ""
+                        var pageOutput : String ?
                         try {
                             val uxProcessor = cache?.uxProcessor
                             val pointcuts = cache?.pointCuts
@@ -330,20 +335,14 @@ class HttpTransmission(var cache: Eos.Cache?) : HttpHandler {
                 }
             }
 
-            //todo: cleanup
-//            for(Map.Entry<String, Interceptor> entry: interceptors.entrySet()){
-//                Interceptor interceptor = entry.getValue();
-//                interceptor.post(httpRequest, httpExchange);
-//            }
             outputStream.flush()
             outputStream.close()
         } catch (ccex: ClassCastException) {
-            println("Attempted to cast an object at the data layer with an incorrect Class type.")
             ccex.printStackTrace()
         } catch (ex: Exception) {
             ex.printStackTrace()
             try {
-                val message = "Sorry, we must have forgot an ampersand. Let us know so we can track it down"
+                val message = "not good. let us know."
                 httpExchange.sendResponseHeaders(200, message.length.toLong())
                 outputStream.write(message.toByteArray())
                 outputStream.flush()
@@ -366,9 +365,9 @@ class HttpTransmission(var cache: Eos.Cache?) : HttpHandler {
                                         httpResponse: HttpResponse,
                                         endpointMapping: EndpointMapping,
                                         httpExchange: HttpExchange
-                                    ): Any? {
+                                    ): Array<Any> {
         val endpointValues = getEndpointValues(requestUri, endpointMapping)
-        val params: MutableList<Any?> = ArrayList()
+        val params: MutableList<Any> = ArrayList()
         val typeNames = endpointMapping.typeNames
         var idx = 0
         for (z in typeNames!!.indices) {
@@ -377,7 +376,7 @@ class HttpTransmission(var cache: Eos.Cache?) : HttpHandler {
                 params.add(httpExchange)
             }
             if (type == "eos.model.web.HttpRequest") {
-                params.add(httpRequest)
+                params.add(httpRequest!!)
             }
             if (type == "eos.model.web.HttpResponse") {
                 params.add(httpResponse)
@@ -434,8 +433,8 @@ class HttpTransmission(var cache: Eos.Cache?) : HttpHandler {
             }
         }
         for ((_, mapping) in cache?.endpointMappings?.mappings!!) {
-            val matcher = Pattern.compile(mapping.regexedPath)
-                .matcher(uri)
+            val matcher = Pattern.compile(mapping.regexedPath!!)
+                .matcher(uri.toString())
             var mappingUri = mapping.path
             if (!mapping.path?.startsWith("/")!!) {
                 mappingUri = "/$mappingUri"
@@ -465,7 +464,7 @@ class HttpTransmission(var cache: Eos.Cache?) : HttpHandler {
         var idx = 0
         for (q in urlBits!!.indices) {
             val urlBit = urlBits[q]
-            if (urlBit!!.isVariable == true) {
+            if (urlBit.isVariable == true) {
                 try {
                     val methodType = parameterTypes[idx]
                     val bit = bits[q]

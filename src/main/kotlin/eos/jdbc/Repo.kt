@@ -7,9 +7,11 @@ import java.util.*
 import javax.sql.DataSource
 
 class Repo {
-    var dataSource: DataSource? = null
-    fun setDataSource(dataSource: DataSource?) {
-        this.dataSource = dataSource
+
+    var ds: DataSource? = null
+
+    fun setDataSource(ds: DataSource?) {
+        this.ds = ds
     }
 
     operator fun get(preSql: String, params: Array<Any?>, cls: Class<*>): Any? {
@@ -17,7 +19,7 @@ class Repo {
         var sql = ""
         try {
             sql = hydrateSql(preSql, params)
-            val connection = dataSource!!.connection
+            val connection = ds!!.connection
             val stmt = connection.createStatement()
             val rs = stmt.executeQuery(sql)
             if (rs.next()) {
@@ -42,7 +44,7 @@ class Repo {
         var sql = ""
         try {
             sql = hydrateSql(preSql, params)
-            val connection = dataSource!!.connection
+            val connection = ds!!.connection
             val stmt = connection.createStatement()
             val rs = stmt.executeQuery(sql)
             if (rs.next()) {
@@ -67,7 +69,7 @@ class Repo {
         var sql = ""
         try {
             sql = hydrateSql(preSql, params)
-            val connection = dataSource!!.connection
+            val connection = ds!!.connection
             val stmt = connection.createStatement()
             val rs = stmt.executeQuery(sql)
             if (rs.next()) {
@@ -90,7 +92,7 @@ class Repo {
     fun save(preSql: String, params: Array<Any?>): Boolean {
         try {
             val sql = hydrateSql(preSql, params)
-            val connection = dataSource!!.connection
+            val connection = ds!!.connection
             val stmt = connection.createStatement()
             stmt.execute(sql)
             connection.commit()
@@ -106,7 +108,7 @@ class Repo {
         var results: MutableList<Any?> = ArrayList()
         try {
             val sql = hydrateSql(preSql, params)
-            val connection = dataSource!!.connection
+            val connection = ds!!.connection
             val stmt = connection.createStatement()
             val rs = stmt.executeQuery(sql)
             results = ArrayList()
@@ -130,7 +132,7 @@ class Repo {
     fun update(preSql: String, params: Array<Any?>): Boolean {
         try {
             val sql = hydrateSql(preSql, params)
-            val connection = dataSource!!.connection
+            val connection = ds!!.connection
             val stmt = connection.createStatement()
             val rs = stmt.execute(sql)
             connection.commit()
@@ -145,7 +147,7 @@ class Repo {
     fun delete(preSql: String, params: Array<Any?>): Boolean {
         try {
             val sql = hydrateSql(preSql, params)
-            val connection = dataSource!!.connection
+            val connection = ds!!.connection
             val stmt = connection.createStatement()
             stmt.execute(sql)
             connection.commit()
