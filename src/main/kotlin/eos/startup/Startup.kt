@@ -13,6 +13,7 @@ import javax.sql.DataSource
 
 class Startup {
     class Builder {
+        var port : Int? = null
         var cache: Eos.Cache? = null
         var repo: Repo? = null
         var support: Support
@@ -132,9 +133,13 @@ class Startup {
             runEndpointProcessor()
         }
 
+        fun withPort(port: Int?): Builder {
+            this.port = port
+            return this
+        }
+
         private fun sayReady() {
-            val name = support.project
-            println("[READY!] $name! : o . o . o . o . o . o . o . o . o . o . o . o  ")
+            println("\n\nrunning @ http://localhost:" + port + "/\n")
         }
 
         @Throws(Exception::class)
@@ -146,6 +151,7 @@ class Startup {
             dispatchEvent()
             return Startup()
         }
+
 
         init {
             support = Support()

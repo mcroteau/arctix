@@ -12,6 +12,7 @@ import java.io.FileNotFoundException
 import java.util.*
 
 class ExchangeStartup(
+    val port : Int?,
     var pointcuts: Map<String?, Pointcut?>,
     var interceptors: Map<String?, Interceptor?>,
     var uxProcessor: UxProcessor) {
@@ -20,20 +21,20 @@ class ExchangeStartup(
 
     @Throws(Exception::class)
     fun start() {
-        val support = Support()
-        var `is` = this.javaClass.getResourceAsStream("/src/main/resources/eos.props")
-        if (`is` == null) {
+
+        var inputStream = this.javaClass.getResourceAsStream("/src/main/resources/eos.props")
+        if (inputStream == null) {
             try {
-                val uri: String = Support.Companion.resourceUri + File.separator + "eos.props"
-                `is` = FileInputStream(uri)
+                val uri: String = Support.resourceUri + File.separator + "eos.props"
+                inputStream = FileInputStream(uri)
             } catch (fe: FileNotFoundException) {
             }
         }
-        if (`is` == null) {
+        if (inputStream == null) {
             throw Exception("eos.props not found in src/main/resources/")
         }
         val props = Properties()
-        props.load(`is`)
+        props.load(inputStream)
         val env = props["eos.env"]
         var noAction = true
         var createDb = false
@@ -109,6 +110,7 @@ class ExchangeStartup(
             .withRepo(repo)
             .make()
         Startup.Builder()
+            .withPort(port)
             .withRepo(repo)
             .withCache(cache)
             .withSettings(settings)

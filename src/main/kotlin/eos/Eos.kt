@@ -26,6 +26,7 @@ import kotlin.collections.ArrayList
 
 class Eos(builder: Builder) {
 
+    val port : Int?
     var support: Support?
     var httpServer: HttpServer?
     var pointcuts: MutableMap<String?, Pointcut?>
@@ -34,7 +35,7 @@ class Eos(builder: Builder) {
     @Throws(Exception::class)
     fun run(): Eos {
         val uxProcessor = UxProcessor()
-        val exchangeStartup = ExchangeStartup(pointcuts, interceptors, uxProcessor)
+        val exchangeStartup = ExchangeStartup(port, pointcuts, interceptors, uxProcessor)
         exchangeStartup.start()
         val cache = exchangeStartup.cache
         val modulator = HttpTransmission(cache)
@@ -60,6 +61,7 @@ class Eos(builder: Builder) {
         var httpServer: HttpServer? = null
         var executors: ExecutorService? = null
         var support: Support? = null
+
         fun withPort(port: Int?): Builder {
             this.port = port
             return this
@@ -163,6 +165,7 @@ class Eos(builder: Builder) {
     }
 
     init {
+        port  = builder.port
         support = builder.support
         httpServer = builder.httpServer
         pointcuts = HashMap()

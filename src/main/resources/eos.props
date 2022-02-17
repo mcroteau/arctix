@@ -1,3 +1,8 @@
-eos.env=basic
+eos.env=create,drop
 eos.assets=
 eos.properties=this
+
+db.url=jdbc:h2:~/Cool
+db.driver=org.h2.Driver
+db.user=sa
+db.pass=

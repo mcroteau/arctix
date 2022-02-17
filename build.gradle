@@ -3,8 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.10'
 }
 
-group 'foo.bar'
-version '1.0-SNAPSHOT'
+group 'dev.j3ee'
+version '0.001'
 
 application {
     mainClassName = 'test.MainKt'
