@@ -12,6 +12,7 @@ nova
 pulsar
 plsar
 
+https://linuxize.com/post/how-to-install-gradle-on-ubuntu-20-04/
 
 remove is jar reference code
 
