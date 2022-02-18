@@ -1,7 +1,6 @@
 package plsar.startup
 
 import plsar.Plsar
-import plsar.jdbc.Repo
 import plsar.processor.UxProcessor
 import plsar.util.*
 import plsar.web.Interceptor
@@ -22,20 +21,20 @@ class ExchangeStartup(
     @Throws(Exception::class)
     fun start() {
 
-        var inputStream = this.javaClass.getResourceAsStream("/src/main/resources/eos.props")
+        var inputStream = this.javaClass.getResourceAsStream("/src/main/resources/plsar.props")
         if (inputStream == null) {
             try {
-                val uri: String = Support.resourceUri + File.separator + "eos.props"
+                val uri: String = Support.resourceUri + File.separator + "plsar.props"
                 inputStream = FileInputStream(uri)
             } catch (fe: FileNotFoundException) {
             }
         }
         if (inputStream == null) {
-            throw Exception("eos.props not found in src/main/resources/")
+            throw Exception("plsar.props not found in src/main/resources/")
         }
         val props = Properties()
         props.load(inputStream)
-        val env = props["eos.env"]
+        val env = props["plsar.env"]
         var noAction = true
         var createDb = false
         var dropDb = false
@@ -58,12 +57,12 @@ class ExchangeStartup(
             }
         }
         if (noAction && (createDb || dropDb)) throw Exception(
-            "You need to either set eos.env=basic for basic systems that do not need " +
-                    "a database connection, or eos.env=create to create a db using src/main/resource/create-db.sql, " +
-                    "or eos.env=create,drop to both create and drop a database."
+            "You need to either set plsar.env=basic for basic systems that do not need " +
+                    "a database connection, or plsar.env=create to create a db using src/main/resource/create-db.sql, " +
+                    "or plsar.env=create,drop to both create and drop a database."
         )
-        val resourcesProp = props["eos.assets"]
-        val propertiesProp = props["eos.properties"]
+        val resourcesProp = props["plsar.assets"]
+        val propertiesProp = props["plsar.properties"]
         var resourcesPre: List<String> = ArrayList()
         if (resourcesProp != null) {
             val resourceStr = resourcesProp.toString()
@@ -90,7 +89,7 @@ class ExchangeStartup(
             for (property in propertiesPre) {
                 property.replace("\\s+".toRegex(), "")
                 if (property == "this") {
-                    propertiesFiles.add("eos.props")
+                    propertiesFiles.add("plsar.props")
                 }else {
                     propertiesFiles.add(property)
                 }

@@ -1,0 +1,21 @@
+
+    <h1>Add Person</h1>
+
+    <p><a href="/todos">Back to Todos</a></p>
+
+    <form action="/todos/person/add" method="post">
+        <input type="hidden" name="todoId" value="${todo.id}"/>
+        <input type="text" name="person" value=""/>
+        <input type="submit" value="Add Person"/>
+    </form>
+
+    <h4>People for ${todo.title}</h4>
+    <ul>
+    <eos:each in="${people}" item="person">
+        <li>${person.person}
+            <form action="/todos/person/delete/${person.id}" method="post">
+                <input type="submit" value="Remove Person"/>
+            </form>
+        </li>
+    </eos:each>
+    </ul>

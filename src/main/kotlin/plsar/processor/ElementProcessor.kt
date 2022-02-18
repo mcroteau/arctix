@@ -36,7 +36,7 @@ class ElementProcessor(var cache: Plsar.Cache?) {
                 buildAddElement(entry)
                 serviceCount++
             }
-            if (cls!!.isAnnotationPresent(HttpHandler::class.java)) {
+            if (cls!!.isAnnotationPresent(Dispatcher::class.java)) {
                 httpInstances[entry.key] = entry.value
             }
             val fields = cls!!.declaredFields

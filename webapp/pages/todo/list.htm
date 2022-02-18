@@ -1,0 +1,39 @@
+
+    <h1>Todos</h1>
+
+    <eos:if condition="${message != ''}">
+        <p id="notify">${message}</p>
+    </eos:if>
+
+    <a href="/todos/create">New Todo</a>
+
+    <eos:if condition="${todos.size() > 0}">
+        <table style="width:100%;">
+            <eos:each in="${todos}" item="todo">
+                <tr>
+                    <td>${todo.id}</td>
+                    <td>
+                        <a href="/todos/edit/${todo.id}" id="todo-${todo.id}">${todo.title}</a>
+                        <h4>People:</h4>
+                        <ul>
+                            <eos:each in="${todo.people}" item="person">
+                                <li>${person.id} ${person.person}</li>
+                            </eos:each>
+                        </ul>
+                    </td>
+                    <td>
+                        <form action="/todos/delete/${todo.id}" method="post">
+                            <a href="/todos/person/add/${todo.id}">Add Person</a>&nbsp;
+                            <input type="submit" value="Delete" id="delete-${todo.id}"/>
+                        </form>
+                    </td>
+                </tr>
+            </eos:each>
+        </table>
+
+        <p>Count: <span id="count">${todos.size()}</span></p>
+    </eos:if>
+
+    <eos:if condition="${todos.size() == 0}">
+        <p>No todos created yet...</p>
+    </eos:if>

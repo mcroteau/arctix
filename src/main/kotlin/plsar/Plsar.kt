@@ -64,7 +64,7 @@ class Plsar(builder: Builder) {
         var executors: ExecutorService? = null
         var support: Support? = null
 
-        fun withPort(port: Int?): Builder {
+        fun port(port: Int?): Builder {
             this.port = port
             return this
         }
@@ -389,7 +389,7 @@ class Plsar(builder: Builder) {
 
 
     companion object {
-        const val SECURITYTAG = "eos.sessions"
+        const val SECURITYTAG = "plsar.sessions"
         const val RESOURCES = "/src/main/resources/"
     }
 

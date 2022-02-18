@@ -1,4 +1,4 @@
-plsar.env=create,drop
+plsar.env=update
 plsar.assets=
 plsar.properties=this
 

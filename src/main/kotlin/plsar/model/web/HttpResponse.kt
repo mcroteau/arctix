@@ -3,9 +3,9 @@ package plsar.model.web
 import java.util.*
 
 class HttpResponse {
-    var title: String? = null
-    var keywords: String? = null
-    var description: String? = null
+    var title: String? = ""
+    var keywords: String? = ""
+    var description: String? = ""
     var data: MutableMap<String?, Any?>
     operator fun set(key: String?, value: Any?) {
         data[key] = value

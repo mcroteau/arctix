@@ -1,0 +1,13 @@
+
+    <h1>Edit Todo</h1>
+
+    <eos:if test="${message != ''}">
+        <p id="notify">${message}</p>
+    </eos:if>
+
+    <p><a href="/todos">Back to Todos</a></p>
+
+    <form action="/todos/update/${todo.id}" method="post">
+        <input type="text" name="title" value="${todo.title}" id="title"/>
+        <input type="submit" value="Update" id="update"/>
+    </form>

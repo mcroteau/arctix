@@ -81,6 +81,8 @@ class HttpTransmission(var cache: Plsar.Cache?) : HttpHandler {
             val instance: Any? = endpointMapping.classDetails?.instance
             val numberOfParameters = method.parameters
 
+            println("signature " + signature.size + " numberOfParameters " + numberOfParameters.size)
+
             var methodResponse : String ?
             if(numberOfParameters.size == 0) {
                 methodResponse = method.invoke(instance) as String
@@ -114,9 +116,9 @@ class HttpTransmission(var cache: Plsar.Cache?) : HttpHandler {
                 httpExchange.close()
                 return
             } else {
-                val title = httpResponse.title
-                val keywords = httpResponse.keywords
-                val description = httpResponse.description
+                val title = httpResponse?.title
+                val keywords = httpResponse?.keywords
+                val description = httpResponse?.description
                 if (!support.isJar) {
                     val webPath = Paths.get("webapp")
                     if (methodResponse.startsWith("/")) {
@@ -168,7 +170,7 @@ class HttpTransmission(var cache: Plsar.Cache?) : HttpHandler {
                         val designContent = baos.toString(StandardCharsets.UTF_8.name())
                         if (!designContent.contains("<eos:content/>")) {
                             try {
-                                val message = "Your html template file is missing the <a:content/> tag"
+                                val message = "your template file is missing <eos:content/>"
                                 httpExchange.sendResponseHeaders(200, message.length.toLong())
                                 outputStream.write(message.toByteArray())
                                 outputStream.flush()
@@ -182,12 +184,12 @@ class HttpTransmission(var cache: Plsar.Cache?) : HttpHandler {
                         val bottom = bits[1]
                         header = header + pageContent
                         var completePage = header + bottom
-                        completePage = completePage.replace("\${title}", title!!)
+                        completePage = completePage.replace("${title}", title!!)
                         if (keywords != null) {
-                            completePage = completePage.replace("\${keywords}", keywords)
+                            completePage = completePage.replace("${keywords}", keywords)
                         }
                         if (description != null) {
-                            completePage = completePage.replace("\${description}", description)
+                            completePage = completePage.replace("${description}", description)
                         }
                         var designOutput = ""
                         try {
@@ -235,14 +237,9 @@ class HttpTransmission(var cache: Plsar.Cache?) : HttpHandler {
                                 e.printStackTrace()
                             }
                         }
-
-                        //todo:cleanup
-//                        for(Map.Entry<String, Interceptor> entry: interceptors.entrySet()){
-//                            Interceptor interceptor = entry.getValue();
-//                            interceptor.post(httpRequest, httpExchange);
-//                        }
                     }
                 } else {
+
                     if (methodResponse.startsWith("/")) methodResponse = methodResponse.replaceFirst("/".toRegex(), "")
                     val pagePath = "/webapp/$methodResponse"
                     val pageInput = this.javaClass.getResourceAsStream(pagePath)
@@ -264,7 +261,7 @@ class HttpTransmission(var cache: Plsar.Cache?) : HttpHandler {
                         val designContent = baos.toString(StandardCharsets.UTF_8.name())
                         if (!designContent.contains("<eos:content/>")) {
                             try {
-                                val message = "Your html template file is missing the <a:content/> tag"
+                                val message = "your template file is missing <eos:content/>"
                                 httpExchange.sendResponseHeaders(200, message.length.toLong())
                                 outputStream.write(message.toByteArray())
                                 outputStream.flush()
@@ -375,22 +372,18 @@ class HttpTransmission(var cache: Plsar.Cache?) : HttpHandler {
             if (type == "com.sun.net.httpserver.HttpExchange") {
                 params.add(httpExchange)
             }
-            if (type == "eos.model.web.HttpRequest") {
+            if (type == "plsar.model.web.HttpRequest") {
                 params.add(httpRequest!!)
             }
-            if (type == "eos.model.web.HttpResponse") {
+            if (type == "plsar.model.web.HttpResponse") {
                 params.add(httpResponse)
             }
-            if (type == "java.lang.Integer") {
+            if (type == "int" || type == "java.lang.Integer") {
                 params.add(Integer.valueOf(endpointValues[idx].value))
                 idx++
             }
-            if (type == "java.lang.Long") {
+            if (type == "long" || type == "java.lang.Long") {
                 params.add(java.lang.Long.valueOf(endpointValues[idx].value))
-                idx++
-            }
-            if (type == "java.math.BigDecimal") {
-                params.add(BigDecimal(endpointValues[idx].value))
                 idx++
             }
             if (type == "java.lang.String") {
@@ -405,8 +398,9 @@ class HttpTransmission(var cache: Plsar.Cache?) : HttpHandler {
         val pathParts = getPathParts(uri)
         val regexParts = getRegexParts(mapping)
         val httpValues: MutableList<EndpointPosition> = ArrayList()
-        for (n in regexParts.indices) {
-            val regex = regexParts[n]
+        for (n in regexParts!!.indices) {
+            var regex = regexParts[n]
+            println("r $regex" + regex)
             if (regex?.contains("A-Za-z0-9") == true) {
                 httpValues.add(EndpointPosition(n, pathParts[n]))
             }
@@ -418,8 +412,8 @@ class HttpTransmission(var cache: Plsar.Cache?) : HttpHandler {
         return Arrays.asList(*uri!!.split("/".toRegex()).toTypedArray())
     }
 
-    protected fun getRegexParts(mapping: EndpointMapping): MutableList<Array<String>?> {
-        return Arrays.asList(mapping.regexedPath?.split("/".toRegex())?.toTypedArray())
+    protected fun getRegexParts(mapping: EndpointMapping): List<String>? {
+        return mapping?.regexedPath?.split("/".toRegex())
     }
 
     protected fun getHttpMapping(verb: String, uri: String?): EndpointMapping? {
@@ -432,6 +426,8 @@ class HttpTransmission(var cache: Plsar.Cache?) : HttpHandler {
                 return mapping
             }
         }
+
+
         for ((_, mapping) in cache?.endpointMappings?.mappings!!) {
             val matcher = Pattern.compile(mapping.regexedPath!!)
                 .matcher(uri.toString())

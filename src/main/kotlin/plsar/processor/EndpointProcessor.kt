@@ -113,6 +113,7 @@ class EndpointProcessor(var cache: Plsar.Cache?) {
             count++
             if (part != "") {
                 if (part.matches("(\\{[a-zA-Z]*\\})".toRegex())) {
+                    println("match $part")
                     regexPath.append("(.*[A-Za-z0-9])")
                     mapping.variablePositions.add(count - 1)
                 } else {
