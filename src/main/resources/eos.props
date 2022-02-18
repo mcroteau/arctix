@@ -1,6 +1,6 @@
-eos.env=create,drop
-eos.assets=
-eos.properties=this
+plsar.env=create,drop
+plsar.assets=
+plsar.properties=this
 
 db.url=jdbc:h2:~/Cool
 db.driver=org.h2.Driver

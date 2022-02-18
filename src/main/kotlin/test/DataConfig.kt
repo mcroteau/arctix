@@ -1,9 +1,9 @@
 package test
 
-import eos.annotate.Config
-import eos.annotate.Dependency
-import eos.annotate.Property
-import eos.jdbc.datasource.Basic
+import plsar.annotate.Config
+import plsar.annotate.Dependency
+import plsar.annotate.Property
+import plsar.jdbc.datasource.Basic
 import javax.sql.DataSource
 
 @Config

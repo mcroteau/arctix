@@ -1,8 +1,8 @@
 package test
 
-import eos.Eos
+import plsar.Plsar
 
 fun main(){
-    val eos = Eos.Builder().withPort(8080).spawn(1301).create()
+    val eos = Plsar.Builder().withPort(8080).spawn(1301).create()
     eos.run()
 }

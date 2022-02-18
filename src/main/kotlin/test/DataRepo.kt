@@ -1,13 +1,11 @@
 package test
 
-import eos.annotate.Bind
-import eos.annotate.DataStore
-import eos.jdbc.Repo
+import plsar.annotate.Inject
 
-@DataStore
+@Repo
 class DataRepo {
 
-    @Bind
+    @Inject
     val repo : Repo? = null
 
     fun list() : Int? {

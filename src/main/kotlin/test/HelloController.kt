@@ -1,16 +1,15 @@
 package test
 
-import eos.annotate.Bind
-import eos.annotate.HttpHandler
-import eos.annotate.Plain
-import eos.annotate.Text
-import eos.annotate.verbs.Get
-import eos.model.web.HttpResponse
+import plsar.annotate.Inject
+import plsar.annotate.HttpHandler
+import plsar.annotate.Text
+import plsar.annotate.verbs.Get
+import plsar.model.web.HttpResponse
 
 @HttpHandler
 class HelloController {
 
-    @Bind
+    @Inject
     val dataRepo : DataRepo? = null
 
     @Text
