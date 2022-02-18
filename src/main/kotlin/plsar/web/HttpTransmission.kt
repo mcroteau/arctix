@@ -80,8 +80,6 @@ class HttpTransmission(var cache: PLSAR.Cache?) : HttpHandler {
             val instance: Any? = endpointMapping.classDetails?.instance
             val numberOfParameters = method.parameters
 
-            println("signature " + signature.size + " numberOfParameters " + numberOfParameters.size)
-
             var methodResponse : String ?
             if(numberOfParameters.size == 0) {
                 methodResponse = method.invoke(instance) as String
@@ -399,7 +397,6 @@ class HttpTransmission(var cache: PLSAR.Cache?) : HttpHandler {
         val httpValues: MutableList<EndpointPosition> = ArrayList()
         for (n in regexParts!!.indices) {
             var regex = regexParts[n]
-            println("r $regex" + regex)
             if (regex?.contains("A-Za-z0-9") == true) {
                 httpValues.add(EndpointPosition(n, pathParts[n]))
             }
