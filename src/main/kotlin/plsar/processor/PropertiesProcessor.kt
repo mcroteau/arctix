@@ -1,6 +1,6 @@
 package plsar.processor
 
-import plsar.Plsar
+import plsar.Pulsar
 import plsar.util.Support
 import java.io.File
 import java.io.FileInputStream
@@ -8,13 +8,13 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.*
 
-class PropertiesProcessor(var cache: Plsar.Cache?) {
+class PropertiesProcessor(var cache: Pulsar.Cache?) {
 
     var support: Support
 
     @Throws(Exception::class)
     protected fun getPropertiesFile(propertyFile: String?): InputStream {
-        var inputStream = this.javaClass.getResourceAsStream(Plsar.RESOURCES + propertyFile)
+        var inputStream = this.javaClass.getResourceAsStream(Pulsar.RESOURCES + propertyFile)
         if (inputStream == null) {
             val resourceUri: String = Support.Companion.resourceUri
             val file = File(resourceUri + File.separator + propertyFile)

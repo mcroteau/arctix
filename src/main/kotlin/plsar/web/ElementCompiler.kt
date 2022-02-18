@@ -1,7 +1,7 @@
 package plsar.web
 
 import com.sun.net.httpserver.HttpExchange
-import plsar.Plsar
+import plsar.Pulsar
 import plsar.model.web.FormElement
 import plsar.model.web.HttpRequest
 import plsar.model.web.HttpSession
@@ -16,7 +16,7 @@ import java.util.*
  * https://gist.github.com/JensWalter/0f19780d131d903879a2
  */
 class ElementCompiler(
-    var cache: Plsar.Cache?,
+    var cache: Pulsar.Cache?,
     var bytes: ByteArray?,
     var sessions: MutableMap<String?, HttpSession?>,
     var httpExchange: HttpExchange

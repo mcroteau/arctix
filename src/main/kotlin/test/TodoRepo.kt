@@ -1,6 +1,6 @@
 package test
 
-import plsar.Plsar
+import plsar.Pulsar
 import plsar.annotate.Data
 import plsar.annotate.Inject
 
@@ -8,7 +8,7 @@ import plsar.annotate.Inject
 class TodoRepo {
 
     @Inject
-    var repo: Plsar.Repo? = null
+    var repo: Pulsar.Repo? = null
 
     fun count(): Long? {
         val sql = "select count(*) from todos"

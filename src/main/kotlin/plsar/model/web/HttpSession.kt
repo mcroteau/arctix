@@ -1,7 +1,7 @@
 package plsar.model.web
 
 import com.sun.net.httpserver.HttpExchange
-import plsar.Plsar
+import plsar.Pulsar
 import plsar.util.Support
 import java.util.*
 
@@ -33,7 +33,7 @@ class HttpSession(sessions: MutableMap<String?, HttpSession?>, httpExchange: Htt
     }
 
     fun dispose(): Boolean {
-        httpExchange.responseHeaders["Set-Cookie"] = Plsar.Companion.SECURITYTAG + "=" + id + "; max-age=0"
+        httpExchange.responseHeaders["Set-Cookie"] = Pulsar.Companion.SECURITYTAG + "=" + id + "; max-age=0"
         if (sessions.containsKey(id)) {
             sessions.remove(id)
             return true

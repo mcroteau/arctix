@@ -1,9 +1,9 @@
 package test
 
-import plsar.Plsar
+import plsar.Pulsar
 
 fun main(){
-    val plsar = Plsar.Builder()
+    val plsar = Pulsar.Builder()
                 .port(8080)
                 .spawn(1301)
                 .create()

@@ -1,6 +1,6 @@
 package plsar.processor
 
-import plsar.Plsar
+import plsar.Pulsar
 import plsar.annotate.Events
 import plsar.model.InstanceDetails
 import plsar.util.Support
@@ -10,10 +10,10 @@ import java.util.*
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 
-class InstanceProcessor(var cache: Plsar.Cache?) {
+class InstanceProcessor(var cache: Pulsar.Cache?) {
 
     var support: Support
-    var cl: ClassLoader
+    var classInstanceLoader: ClassLoader
     lateinit var jarDeps: ArrayList<String>
     var objects: Map<String, InstanceDetails>
 
@@ -84,20 +84,14 @@ class InstanceProcessor(var cache: Plsar.Cache?) {
         if (jarEntry.contains("META-INF/")) return true
         if (jarEntry.contains("$")) return true
         return if (jarEntry.endsWith("Exception")) true else false
-    }//                if(jarEntry.toString().contains("javax"))continue;
+    }
 
-    //                if(jarEntry.toString().contains("org/apache/jasper"))continue;
-//                if(jarEntry.toString().contains("org/apache/taglibs"))continue;
-//                if(jarEntry.toString().contains("org/apache/tools"))continue;
-//                if(jarEntry.toString().contains("org/eclipse/"))continue;
-//                if(jarEntry.toString().contains("org/h2"))continue;
-//was 5
     //todo:
     protected val classesJar: Unit
         protected get() {
             try {
                 //todo:
-                val jarUriTres = cl.getResource("plsar/") //was 5
+                val jarUriTres = classInstanceLoader.getResource("plsar/") //was 5
                 val jarPath = jarUriTres.path.substring(5, jarUriTres.path.indexOf("!"))
                 val file = JarFile(jarPath)
                 val jarFile: Enumeration<*> = file.entries()
@@ -108,14 +102,9 @@ class InstanceProcessor(var cache: Plsar.Cache?) {
                     }
                     if (isDirt(jarEntry.toString())) continue
 
-//                if(jarEntry.toString().contains("javax"))continue;
-//                if(jarEntry.toString().contains("org/apache/jasper"))continue;
-//                if(jarEntry.toString().contains("org/apache/taglibs"))continue;
-//                if(jarEntry.toString().contains("org/apache/tools"))continue;
-//                if(jarEntry.toString().contains("org/eclipse/"))continue;
-//                if(jarEntry.toString().contains("org/h2"))continue;
+
                     val path = getPath(jarEntry.toString())
-                    val cls = cl.loadClass(path)
+                    val cls = classInstanceLoader.loadClass(path)
                     if (cls.isAnnotation ||
                         cls.isInterface ||
                         cls.name === this.javaClass.name
@@ -154,9 +143,9 @@ class InstanceProcessor(var cache: Plsar.Cache?) {
 
                 var cls : Class<*>? = null
                 try {
-                    cls = cl.loadClass(path)
+                    cls = classInstanceLoader.loadClass(path)
                 }catch(ex: Exception){
-                    cls = cl.loadClass(path + "Kt")
+                    cls = classInstanceLoader.loadClass(path + "Kt")
                 }
 
                 if (cls?.isAnnotation == true ||
@@ -220,6 +209,6 @@ class InstanceProcessor(var cache: Plsar.Cache?) {
     init {
         support = Support()
         objects = HashMap()
-        cl = Thread.currentThread().contextClassLoader
+        classInstanceLoader = Thread.currentThread().contextClassLoader
     }
 }

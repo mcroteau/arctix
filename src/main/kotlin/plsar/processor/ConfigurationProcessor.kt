@@ -1,6 +1,6 @@
 package plsar.processor
 
-import plsar.Plsar
+import plsar.Pulsar
 import plsar.annotate.*
 import plsar.model.Element
 import plsar.model.InstanceDetails
@@ -9,7 +9,7 @@ import plsar.util.Support
 import java.lang.reflect.Method
 import java.util.*
 
-class ConfigurationProcessor(var cache: Plsar.Cache?) {
+class ConfigurationProcessor(var cache: Pulsar.Cache?) {
 
     var support: Support
     var methods: MutableMap<String, MethodFeature>

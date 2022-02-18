@@ -2,7 +2,7 @@ package plsar.model.web
 
 import com.sun.net.httpserver.Headers
 import com.sun.net.httpserver.HttpExchange
-import plsar.Plsar
+import plsar.Pulsar
 import plsar.util.Support
 import java.util.*
 
@@ -22,14 +22,14 @@ class HttpRequest(var sessions: MutableMap<String?, HttpSession?>, httpExchange:
         get() = httpExchange.requestHeaders
 
     fun setSession() {
-        val id = support.getCookie(Plsar.SECURITYTAG, httpExchange.requestHeaders)
+        val id = support.getCookie(Pulsar.SECURITYTAG, httpExchange.requestHeaders)
         if (sessions.containsKey(id)) {
             session = sessions[id]
         }
     }
 
     fun getSession(newitup: Boolean): HttpSession? {
-        val id = support.getCookie(Plsar.SECURITYTAG, httpExchange.requestHeaders)
+        val id = support.getCookie(Pulsar.SECURITYTAG, httpExchange.requestHeaders)
         if (!newitup) {
             if (sessions.containsKey(id)) {
                 session = sessions[id]
@@ -44,7 +44,7 @@ class HttpRequest(var sessions: MutableMap<String?, HttpSession?>, httpExchange:
     private fun getHttpSession(): HttpSession {
         var httpSession = HttpSession(sessions, httpExchange)
         sessions[httpSession.id] = httpSession
-        val compound: String = Plsar.Companion.SECURITYTAG + "=" + httpSession.id
+        val compound: String = Pulsar.Companion.SECURITYTAG + "=" + httpSession.id
         httpExchange.responseHeaders["Set-Cookie"] = compound
         httpSession = httpSession
         return httpSession

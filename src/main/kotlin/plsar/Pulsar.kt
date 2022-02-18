@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import javax.sql.DataSource
 
-class Plsar(builder: Builder) {
+class Pulsar(builder: Builder) {
 
     val port : Int?
     var support: Support?
@@ -35,7 +35,7 @@ class Plsar(builder: Builder) {
     var interceptors: MutableMap<String?, Interceptor?>
 
     @Throws(Exception::class)
-    fun run(): Plsar {
+    fun run(): Pulsar {
         val uxProcessor = UxProcessor()
         val exchangeStartup = ExchangeStartup(port, pointcuts, interceptors, uxProcessor)
         exchangeStartup.start()
@@ -78,8 +78,8 @@ class Plsar(builder: Builder) {
             return this
         }
 
-        fun create(): Plsar {
-            return Plsar(this)
+        fun create(): Pulsar {
+            return Pulsar(this)
         }
     }
 

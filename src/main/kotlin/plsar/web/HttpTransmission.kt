@@ -2,7 +2,7 @@ package plsar.web
 
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
-import plsar.Plsar
+import plsar.Pulsar
 import plsar.annotate.*
 import plsar.model.web.*
 import plsar.util.MimeGetter
@@ -10,14 +10,13 @@ import plsar.util.ResourceResponse
 import plsar.util.Support
 import plsar.util.UriTranslator
 import java.io.*
-import java.math.BigDecimal
 import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern
 
-class HttpTransmission(var cache: Plsar.Cache?) : HttpHandler {
+class HttpTransmission(var cache: Pulsar.Cache?) : HttpHandler {
     var support: Support
     var sessions: MutableMap<String?, HttpSession?>
     override fun handle(httpExchange: HttpExchange) {

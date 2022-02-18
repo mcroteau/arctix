@@ -1,7 +1,7 @@
 package plsar.util
 
 import com.sun.net.httpserver.HttpExchange
-import plsar.Plsar
+import plsar.Pulsar
 import java.io.*
 import java.nio.file.Paths
 
@@ -9,7 +9,7 @@ class ResourceResponse(builder: Builder) {
     val GET = "get"
     val WEBAPP = "webapp"
     val CONTENTTYPE = "Content-Type"
-    var cache: Plsar.Cache?
+    var cache: Pulsar.Cache?
     var requestUri: String?
     var httpVerb: String?
     var httpExchange: HttpExchange?
@@ -93,7 +93,7 @@ class ResourceResponse(builder: Builder) {
     }
 
     class Builder {
-        var cache: Plsar.Cache? = null
+        var cache: Pulsar.Cache? = null
         var requestUri: String? = null
         var httpVerb: String? = null
         var resources: List<String>? = null
@@ -108,7 +108,7 @@ class ResourceResponse(builder: Builder) {
             return this
         }
 
-        fun withCache(cache: Plsar.Cache?): Builder {
+        fun withCache(cache: Pulsar.Cache?): Builder {
             this.cache = cache
             return this
         }
@@ -129,7 +129,7 @@ class ResourceResponse(builder: Builder) {
     }
 
     companion object {
-        fun isResource(requestUri: String?, cache: Plsar.Cache?): Boolean {
+        fun isResource(requestUri: String?, cache: Pulsar.Cache?): Boolean {
             if (cache?.resources == null) return false
             val bits = requestUri!!.split("/".toRegex()).toTypedArray()
             if (bits.size > 1) {

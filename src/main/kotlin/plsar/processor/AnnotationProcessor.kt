@@ -1,6 +1,6 @@
 package plsar.processor
 
-import plsar.Plsar
+import plsar.Pulsar
 import plsar.annotate.*
 import plsar.model.InstanceDetails
 import plsar.util.Support
@@ -9,7 +9,7 @@ import java.lang.reflect.Type
 import java.math.BigDecimal
 import java.util.*
 
-class AnnotationProcessor(var cache: Plsar.Cache?) {
+class AnnotationProcessor(var cache: Pulsar.Cache?) {
     var support: Support
     var processed: MutableMap<String?, InstanceDetails?>
     var annotations: MutableList<InstanceDetails?>
