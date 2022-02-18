@@ -1,6 +1,6 @@
 package plsar.startup
 
-import plsar.Pulsar
+import plsar.PLSAR
 import plsar.processor.UxProcessor
 import plsar.util.*
 import plsar.web.Interceptor
@@ -16,7 +16,7 @@ class ExchangeStartup(
     var interceptors: Map<String?, Interceptor?>,
     var uxProcessor: UxProcessor) {
 
-    var cache: Pulsar.Cache? = null
+    var cache: PLSAR.Cache? = null
 
     @Throws(Exception::class)
     fun start() {
@@ -101,8 +101,8 @@ class ExchangeStartup(
         settings.isNoAction = noAction
         settings.resources = resources
         settings.propertiesFiles = propertiesFiles
-        val repo = Pulsar.Repo()
-        cache = Pulsar.Cache.Builder()
+        val repo = PLSAR.Repo()
+        cache = PLSAR.Cache.Builder()
             .withSettings(settings)
             .withPointCuts(pointcuts)
             .withInterceptors(interceptors)

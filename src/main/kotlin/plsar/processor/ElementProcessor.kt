@@ -1,12 +1,12 @@
 package plsar.processor
 
-import plsar.Pulsar
+import plsar.PLSAR
 import plsar.annotate.*
 import plsar.model.Element
 import plsar.model.InstanceDetails
 import java.util.*
 
-class ElementProcessor(var cache: Pulsar.Cache?) {
+class ElementProcessor(var cache: PLSAR.Cache?) {
     var jdbcCount = 0
     var serviceCount = 0
     var elementCount = 0

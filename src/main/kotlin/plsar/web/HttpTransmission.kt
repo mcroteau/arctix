@@ -2,7 +2,7 @@ package plsar.web
 
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
-import plsar.Pulsar
+import plsar.PLSAR
 import plsar.annotate.*
 import plsar.model.web.*
 import plsar.util.MimeGetter
@@ -16,7 +16,7 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern
 
-class HttpTransmission(var cache: Pulsar.Cache?) : HttpHandler {
+class HttpTransmission(var cache: PLSAR.Cache?) : HttpHandler {
     var support: Support
     var sessions: MutableMap<String?, HttpSession?>
     override fun handle(httpExchange: HttpExchange) {

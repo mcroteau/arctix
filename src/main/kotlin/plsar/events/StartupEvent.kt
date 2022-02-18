@@ -1,7 +1,7 @@
 package plsar.events
 
-import plsar.Pulsar
+import plsar.PLSAR
 
 interface StartupEvent {
-    fun setupComplete(cache: Pulsar.Cache?)
+    fun setupComplete(cache: PLSAR.Cache?)
 }

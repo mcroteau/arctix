@@ -1,7 +1,7 @@
 package plsar.util
 
 import com.sun.net.httpserver.Headers
-import plsar.Pulsar
+import plsar.PLSAR
 import plsar.model.web.HttpRequest
 import java.io.*
 import java.lang.reflect.Type
@@ -92,7 +92,7 @@ class Support {
     val jarFile: JarFile?
         get() {
             try {
-                val jarUri = Pulsar::class.java.classLoader.getResource("plsar/")
+                val jarUri = PLSAR::class.java.classLoader.getResource("plsar/")
                 val jarPath = jarUri.path.substring(5, jarUri.path.indexOf("!"))
                 return JarFile(jarPath)
             } catch (ex: IOException) {
@@ -244,7 +244,7 @@ class Support {
                     return resourceUri
                 }
                 val RESOURCES_URI = "/src/main/resources/"
-                val indexUri = Pulsar::class.java.getResource(RESOURCES_URI)
+                val indexUri = PLSAR::class.java.getResource(RESOURCES_URI)
                     ?: throw FileNotFoundException("A8i : unable to find resource $RESOURCES_URI")
                 return indexUri.toURI().toString()
             }

@@ -1,6 +1,6 @@
 package plsar.processor
 
-import plsar.Pulsar
+import plsar.PLSAR
 import plsar.annotate.*
 import plsar.annotate.verbs.Delete
 import plsar.annotate.verbs.Get
@@ -10,7 +10,7 @@ import plsar.model.web.*
 import java.lang.reflect.Method
 import java.util.*
 
-class EndpointProcessor(var cache: Pulsar.Cache?) {
+class EndpointProcessor(var cache: PLSAR.Cache?) {
     var processed: MutableMap<String?, InstanceDetails?>
     var mappings: EndpointMappings
 

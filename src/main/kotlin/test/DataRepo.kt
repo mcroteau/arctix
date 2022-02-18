@@ -1,6 +1,6 @@
 package test
 
-import plsar.Pulsar
+import plsar.PLSAR
 import plsar.annotate.Data
 import plsar.annotate.Inject
 
@@ -8,7 +8,7 @@ import plsar.annotate.Inject
 class DataRepo {
 
     @Inject
-    val repo : Pulsar.Repo? = null
+    val repo : PLSAR.Repo? = null
 
     fun list() : Int? {
         val sql : String = "select count(*) from bebops"

@@ -1,6 +1,6 @@
 package plsar.startup
 
-import plsar.Pulsar
+import plsar.PLSAR
 import plsar.jdbc.Mediator
 import plsar.model.Element
 import plsar.processor.*
@@ -14,17 +14,17 @@ class Startup {
     class Builder {
 
         var port : Int? = null
-        var cache: Pulsar.Cache? = null
-        var repo: Pulsar.Repo? = null
+        var cache: PLSAR.Cache? = null
+        var repo: PLSAR.Repo? = null
         var support: Support
         var settings: Settings? = null
 
-        fun withRepo(repo: Pulsar.Repo?): Builder {
+        fun withRepo(repo: PLSAR.Repo?): Builder {
             this.repo = repo
             return this
         }
 
-        fun withCache(cache: Pulsar.Cache?): Builder {
+        fun withCache(cache: PLSAR.Cache?): Builder {
             this.cache = cache
             return this
         }
@@ -76,7 +76,7 @@ class Startup {
         private fun dispatchEvent() {
             if (cache?.events != null) {
                 val setupComplete =
-                    cache?.events!!.javaClass.getDeclaredMethod("setupComplete", Pulsar.Cache::class.java)
+                    cache?.events!!.javaClass.getDeclaredMethod("setupComplete", PLSAR.Cache::class.java)
                 if (setupComplete != null) {
                     setupComplete.isAccessible = true
                     setupComplete.invoke(cache?.events, *arrayOf(cache))

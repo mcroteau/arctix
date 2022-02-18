@@ -1,6 +1,6 @@
 package plsar.jdbc
 
-import plsar.Pulsar
+import plsar.PLSAR
 import plsar.util.*
 import org.h2.tools.RunScript
 import java.io.File
@@ -11,7 +11,7 @@ import javax.sql.DataSource
 
 class Mediator(var settings: Settings?,
                var support: Support,
-               var cache: Pulsar.Cache?) {
+               var cache: PLSAR.Cache?) {
 
     val CREATEDB_URI = "src/main/resources/create-db.sql"
 

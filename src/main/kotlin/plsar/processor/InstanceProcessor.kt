@@ -1,6 +1,6 @@
 package plsar.processor
 
-import plsar.Pulsar
+import plsar.PLSAR
 import plsar.annotate.Events
 import plsar.model.InstanceDetails
 import plsar.util.Support
@@ -10,7 +10,7 @@ import java.util.*
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 
-class InstanceProcessor(var cache: Pulsar.Cache?) {
+class InstanceProcessor(var cache: PLSAR.Cache?) {
 
     var support: Support
     var classInstanceLoader: ClassLoader
